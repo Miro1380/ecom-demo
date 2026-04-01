@@ -1,15 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.CreateCustomerRequest;
+import com.example.demo.DTO.CustomerStatusResponse;
+import com.example.demo.DTO.OrderResponse;
 import com.example.demo.entity.CustomerEntity;
-import com.example.demo.entity.OrderEntity;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +41,6 @@ public class CustomerService {
     }
 
     //Get all customers
-
     @Transactional(readOnly = true)
     public List<CustomerEntity> findAllCustomers(){
         return customerRepository.findAll();
@@ -55,19 +54,36 @@ public class CustomerService {
 
     //Find all orders by customerId
     @Transactional(readOnly = true)
-    public List<OrderEntity> findOrdersByCustomerId(String customerId){
-       //Optional<CustomerEntity> customer = customerRepository.findByCustomerId(customerId);
-
+    public List<OrderResponse> findOrdersByCustomerId(String customerId){
         //Verify exists
+        //Get Customer Id from repo, use to get order info in order repo
        customerRepository.findByCustomerId(customerId)
                .orElseThrow(()-> new RuntimeException("Customer not found: "+ customerId));
 
-       return orderRepository.findByCustomer_CustomerId(customerId);
+       //List returned
+        return orderRepository.findByCustomer_CustomerId(customerId)
+                .stream()
+                .map(order -> new OrderResponse(
+                        order.getOrderId(),
+                        order.getQuantity(),
+                        order.getPrice(),
+                        order.getStatus(),
+                        order.getProduct().getName(),
+                        order.getProduct().getProductId()
+                ))
+                .toList();
     }
 
     //Find all customers by STATUS
     @Transactional(readOnly = true)
-    public List<CustomerEntity> findCustomersByStatus(String status){
-        return customerRepository.findByStatus(status);
+    public List<CustomerStatusResponse> findCustomersByStatus(String status){
+        return customerRepository.findByStatus(status)
+                .stream()
+                .map( customer -> new CustomerStatusResponse(
+                        customer.getCustomerId(),
+                        customer.getName(),
+                        customer.getStatus()
+                ))
+                .toList();
     }
 }

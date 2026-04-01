@@ -27,7 +27,8 @@ public class ProductController {
         //Use an empty check
         List<ProductEntity> productList = productService.getAllProducts();
         //log.info("Returning all products listed");
-        return productList.isEmpty()? ResponseEntity.noContent().build()
+        return productList.isEmpty()
+                ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(productList);
     }
 
@@ -40,8 +41,9 @@ public class ProductController {
     @GetMapping("category/{category}")
     public ResponseEntity<List<ProductEntity>> getProductByCategory(@PathVariable String category){
         List<ProductEntity> productList = productService.getProductByCategory(category);
-        return productList.isEmpty()? ResponseEntity.noContent().build()
-                :ResponseEntity.ok(productList);
+        return productList.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(productList);
     }
 
     @GetMapping("status/{status}")

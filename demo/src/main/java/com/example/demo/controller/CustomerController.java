@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.CreateCustomerRequest;
+import com.example.demo.DTO.CustomerStatusResponse;
+import com.example.demo.DTO.OrderResponse;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.OrderEntity;
 import com.example.demo.service.CustomerService;
@@ -40,8 +42,8 @@ public class CustomerController {
 
     //Get all orders for a customer
     @GetMapping("/{customerId}/orders")
-    public ResponseEntity<List<OrderEntity>> getOrdersByCustomerId(String customerId){
-        List<OrderEntity> ordersList = customerService.findOrdersByCustomerId(customerId);
+    public ResponseEntity<List<OrderResponse>> getOrdersByCustomerId(@PathVariable String customerId){
+        List<OrderResponse> ordersList = customerService.findOrdersByCustomerId(customerId);
         return ordersList.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(ordersList);
@@ -49,14 +51,16 @@ public class CustomerController {
 
     //Get Status of all customers of type 'status' ("ACTIVE,INACTIVE",etc.)
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<CustomerEntity>> getCustomersByStatus(String status){
-        List<CustomerEntity> customerList = customerService.findCustomersByStatus(status);
+    public ResponseEntity<List<CustomerStatusResponse>> getCustomersByStatus(@PathVariable String status){
+        List<CustomerStatusResponse> customerList = customerService.findCustomersByStatus(status);
         return customerList.isEmpty()
                 ? ResponseEntity.noContent().build()
-                :ResponseEntity.ok(customerList);
+                : ResponseEntity.ok(customerList);
     }
 
     //POSTs
+
+    //Should change to a customerDTO ?
     @PostMapping
     public ResponseEntity<CustomerEntity> onCreateCustomer(@RequestBody CreateCustomerRequest request){
         CustomerEntity saved = customerService.createCustomer(request);
