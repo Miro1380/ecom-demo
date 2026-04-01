@@ -32,7 +32,9 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderEntity>> getAllOrders(){
         List<OrderEntity> orders = orderService.findAllOrders();
-        return orders.isEmpty()? ResponseEntity.notFound().build(): ResponseEntity.ok(orders);
+        return orders.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{orderId}")
@@ -46,7 +48,7 @@ public class OrderController {
     public ResponseEntity<List<OrderEntity>> getByOrderStatus(@PathVariable String orderStatus){
         List<OrderEntity> orders = orderService.findOrdersByStatus(orderStatus);
         return orders.isEmpty()?
-                ResponseEntity.notFound().build():
+                ResponseEntity.noContent().build():
                 ResponseEntity.ok(orders);
     }
 

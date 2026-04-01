@@ -60,6 +60,4 @@ public class ProductController {
         ProductEntity saved = productService.createProduct(request);
         return ResponseEntity.ok(saved);
     }
-
-
 }
