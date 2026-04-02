@@ -22,6 +22,7 @@ public class CustomerEntity {
     private Long id;
 
     //Removed jsonIgnore tag
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
