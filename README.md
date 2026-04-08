@@ -212,4 +212,4 @@ Creates a new product.
    ./mvnw spring-boot:run
    ```
 
-The API will be available at `http://localhost:8080`.
+The API will be available at `https://ecom-demo-production-f909.up.railway.app/api`.
