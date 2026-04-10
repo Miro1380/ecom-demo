@@ -213,3 +213,5 @@ Creates a new product.
    ```
 
 The API will be available at `http://localhost:8080`.
+
+The live API hosted on Railway is available at `https://ecom-demo-production-f909.up.railway.app/api`
