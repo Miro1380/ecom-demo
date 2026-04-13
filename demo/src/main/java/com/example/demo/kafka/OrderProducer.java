@@ -20,10 +20,15 @@ public class OrderProducer {
     public void sendMessage(CreateOrderRequest request){
         log.info("Producing message to Kafka: {}", request);
 
-        //"order" is name of the topic
-        kafkaTemplate.send("order", request.orderId(),request)
-                .whenComplete((result,ex) ->{
-
-                });
+        try {
+            kafkaTemplate.send("order", request.orderId(), request)
+                    .whenComplete((result, ex) -> {
+                        if (ex != null) {
+                            log.warn("Kafka send failed, skipping: {}", ex.getMessage());
+                        }
+                    });
+        } catch (Exception e) {
+            log.warn("Kafka unavailable, skipping message: {}", e.getMessage());
+        }
     }
 }
