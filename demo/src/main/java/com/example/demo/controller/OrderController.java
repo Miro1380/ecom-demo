@@ -10,7 +10,7 @@ import com.example.demo.service.OrderService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping("/api/orders")
